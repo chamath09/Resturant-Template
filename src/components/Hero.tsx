@@ -1,9 +1,15 @@
-import React, { useRef, useMemo } from 'react';
+import React, { useRef, useMemo, useState, useEffect } from 'react';
 import { Canvas, useFrame } from '@react-three/fiber';
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from './ui/button';
 import { Link } from 'react-router-dom';
 import * as THREE from 'three';
+
+const heroImages = [
+  "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1550966871-3ed3c47e2ce2?q=80&w=2070&auto=format&fit=crop",
+  "https://images.unsplash.com/photo-1559339352-11d035aa65de?q=80&w=1974&auto=format&fit=crop"
+];
 
 const Particles = ({ count = 300 }) => {
   const mesh = useRef<THREE.InstancedMesh>(null!);
@@ -61,15 +67,31 @@ const Particles = ({ count = 300 }) => {
 };
 
 const Hero = () => {
+  const [currentImage, setCurrentImage] = useState(0);
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      setCurrentImage((prev) => (prev + 1) % heroImages.length);
+    }, 5000);
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <section className="relative w-full h-screen bg-black overflow-hidden">
-      {/* Background Image */}
+      {/* Background Image Slider */}
       <div className="absolute inset-0 z-0">
-        <img 
-          src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?q=80&w=2070&auto=format&fit=crop" 
-          alt="Restaurant Ambience" 
-          className="w-full h-full object-cover opacity-60"
-        />
+        <AnimatePresence mode="wait">
+          <motion.img 
+            key={currentImage}
+            src={heroImages[currentImage]} 
+            alt="Restaurant Ambience" 
+            className="absolute inset-0 w-full h-full object-cover opacity-60"
+            initial={{ opacity: 0, scale: 1.1 }}
+            animate={{ opacity: 0.6, scale: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1.5 }}
+          />
+        </AnimatePresence>
         <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/50 to-black/90" />
       </div>
 

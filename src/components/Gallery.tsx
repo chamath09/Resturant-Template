@@ -8,6 +8,7 @@ const galleryImages = [
   { src: "https://picsum.photos/seed/night_ambience/600/400", alt: "Night Atmosphere" },
   { src: "https://picsum.photos/seed/chef_cooking/600/800", alt: "Chef in Action" }, // Tall image
   { src: "https://picsum.photos/seed/dining_experience/600/400", alt: "Dining Experience" },
+  { src: "https://picsum.photos/seed/dessert_delight/600/400", alt: "Signature Dessert" },
 ];
 
 const Gallery = () => {
